@@ -11,7 +11,7 @@ class QuickstartUser(FastHttpUser):
         self.token = os.environ.get('BLOCKSET_TOKEN')
         self.headers = {
             'authorization': f'Bearer {self.token}',
-            # 'connection': 'close'
+            'connection': 'close'
         }
 
     @task
