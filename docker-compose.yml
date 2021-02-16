@@ -2,7 +2,8 @@ version: '3'
 
 services:
   master:
-    image: locustio/locust
+    build:
+      context: '.'
     ports:
      - "80:8089"
     volumes:
@@ -12,7 +13,8 @@ services:
       BLOCKSET_TOKEN: $BLOCKSET_TOKEN
 
   worker:
-    image: locustio/locust
+    build:
+      context: '.'
     volumes:
       - ./:/mnt/locust
     command: -f /mnt/locust/locustfile.py --worker --master-host master

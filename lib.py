@@ -11,14 +11,17 @@ from requests_toolbelt.sessions import BaseUrlSession
 
 class TestEnv:
     def __init__(self, standalone=False):
+        self.standalone = standalone
         self.client_token = os.environ.get('BLOCKSET_TOKEN')
-        self.user_signing_key = SigningKey.generate(curve=SECP256k1)
-        self.user_token = ''
         self.client_headers = {
             'Authorization': f'Bearer {self.client_token}',
         }
+        self.init_user_params()
+
+    def init_user_params(self):
+        self.user_signing_key = SigningKey.generate(curve=SECP256k1)
+        self.user_token = ''
         self.user_headers = {}
-        self.standalone = standalone
 
     @staticmethod
     def create_standalone():
@@ -60,3 +63,9 @@ class TestEnv:
         self.user_headers = {
             'Authorization': f'Bearer {self.user_token}',
         }
+
+    def delete_user(self):
+        client = getattr(self, 'client')
+        resp = client.delete('/users/me', headers=self.client_headers)
+        if resp.status_code == 204:
+            self.init_user_params()

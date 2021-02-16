@@ -20,7 +20,7 @@ class QuickstartUser(FastHttpUser, TestEnv):
 
     def on_stop(self):
         """delete user"""
-        pass
+        self.delete_user()
 
     @task
     def get_blockchains_client(self):
